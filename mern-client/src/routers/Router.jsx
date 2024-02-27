@@ -16,7 +16,7 @@ import UpdateBook from "../dashboard/UpdateBook";
 import SignUp from "../authentication/SignUp";
 import Login from "../authentication/Login";
 import PrivateRoute from "../privateroute/PrivateRoute";
-import Logout from "../components/Logout";
+import Logout from "../authentication/Logout";
 import axios from "axios";
 
 const router = createBrowserRouter([
