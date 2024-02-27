@@ -16,26 +16,6 @@ const Login = () => {
   const { register, handleSubmit} = useForm();
   const from = location.state?.from?.pathname || "/";
 
-  // const handleLogin = async (event) => {
-  //   event.preventDefault(); // Prevent default form submission behavior
-  //   const form = event.target;
-  //   const name = form.name.value;
-  //   const email = form.email.value;
-  //   const password = form.password.value;
-  //   login(email, password, name).then((userCredential) => {
-  //       const user = userCredential.user;
-  //       toast.success("Login Successfull");
-  //       navigate(from, {replace: true})
-  //   })
-  //   .catch((error) => {
-  //       setError("Email or Password is incorrect.."); 
-  //       const errorCode= error.code;
-  //       const errorMessage = error.message;
-  //   });
-    
-  // };
-
-
   const handleLogin = async (data) => {
     const { name, email, password } = data;
     try {

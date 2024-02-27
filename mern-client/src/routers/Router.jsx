@@ -7,7 +7,6 @@ import Home from "../home/Home";
 import About from "../components/About";
 import ContactUs from "../components/ContactUs";
 import AllBooks from "../allbooks/AllBooks";
-// import DashboardLayout from "../../dashboard/DashboardLayout";
 import DashboardLayout from "../dashboard/DashboardLayout";
 import Dashboard from "../dashboard/Dashboard";
 import UploadBook from "../dashboard/UploadBook";
