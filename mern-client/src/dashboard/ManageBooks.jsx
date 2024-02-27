@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Table } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import axios from "axios"
 
 const ManageBooks = () => {
   const [allBooks, setAllBooks] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/all-books").then(res => res.json()).then(data => setAllBooks(data));
-  }, [])
+    axios.get("http://localhost:5000/all-books").then(res => {setAllBooks(res.data)}).catch(error => { console.log('Error Fetching data', error)});
+  }, []);
 
 
   const handleDelete = (id) => {
@@ -30,10 +31,8 @@ const ManageBooks = () => {
   };
   const handleConfirmDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/book/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
+      const response = await axios.delete(`http://localhost:5000/book/${id}`);
+      if (response.status!==200) {
         throw new Error("Failed to delete book");
       }
       toast.dismiss(); // Dismiss the toast once deletion is confirmed

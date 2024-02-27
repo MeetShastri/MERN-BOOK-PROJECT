@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { Label, Textarea } from 'flowbite-react';
 import { Button, TextInput } from 'flowbite-react';
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios"
+import { useForm } from 'react-hook-form';
+
 
 const UploadBook = () => {
+  const { register, handleSubmit } = useForm();
   const bookCategories = [
     "Fiction",
     "Non Fiction",
@@ -15,7 +19,7 @@ const UploadBook = () => {
     "Horror",
     "Religion",
     "Travel"
-  ]
+  ];
 
   const [selectedBookCategory, setSelectedBookCategory] = useState(bookCategories[0]);
 
@@ -24,64 +28,65 @@ const UploadBook = () => {
     setSelectedBookCategory(event.target.value);
   }
 
+  const onSubmit = async (data) => {
 
-  const handleBookSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const formData = new FormData(form);
-    console.log(formData)
     try {
-      const response = await fetch("http://localhost:5000/upload-book", {
-        method: "POST",
-        body: formData,
-      });
-      if (!response.ok) {
+      const formData = new FormData();
+
+      formData.append("title",data.title)
+      formData.append("authorName",data.authorName)
+      formData.append("category",data.category)
+      formData.append("description",data.description)
+      formData.append("bookPdfURL",data.bookPdfURL)
+      formData.append("image",data.image[0])
+
+      const response = await axios.post("http://localhost:5000/upload-book",
+        formData
+      );
+      if (response.status === 200) {
+        toast.success("Book uploaded successfully!!!");
+      } else {
         throw new Error("Failed to upload book");
       }
-
-      toast.success("Book uploaded successfully!!!");
-      form.reset();
     } catch (error) {
       console.error("Error uploading book:", error);
-      toast.success("Failed to upload book. Please try again later.");
+      toast.error("Failed to upload book. Please try again later.");
     }
   };
+
 
   return (
     <div className='px-4 my-12 min-h-screen w-full'>
       <h2 className='mb-8 text-3xl font-bold'>Upload Your Book</h2>
-      <form onSubmit={handleBookSubmit} className="flex flex-col gap-4" encType="multipart/form-data">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" encType="multipart/form-data">
         <div className='flex gap-8'>
           <div className='lg:w-1/2'>
             <div className="mb-2 block mx-2">
               <Label htmlFor="title" value="Book Title" />
             </div>
-            <TextInput name="title" id="title" type="text" placeholder="Book Name" required />
+            <TextInput {...register("title")} id="title" type="text" placeholder="Book Name" required />
           </div>
           <div className='lg:w-1/2'>
             <div className="mb-2 block mx-2">
               <Label htmlFor="authorName" value="Author Name" />
             </div>
-            <TextInput name="authorName" id="authorName" type="text" placeholder="Author Name" required />
+            <TextInput {...register("authorName")} id="authorName" type="text" placeholder="Author Name" required />
           </div>
         </div>
-
 
         <div className='flex gap-8'>
           <div className='lg:w-1/2'>
             <div className="mb-2 block mx-2">
               <Label htmlFor="image" value="Book Image" />
             </div>
-            <input name="image" id="image" type="file" placeholder="Book Image" required />
+            <input {...register("image")} id="image" type="file" placeholder="Book Image" required />
           </div>
           <div className='lg:w-1/2'>
             <div className="mb-2 block mx-2">
-              <Label htmlFor="inputState" value="Book Category" />
+              <Label htmlFor="category" value="Book Category" />
             </div>
-            <select name="category" id="inputState" className='w-full rounded' value={selectedBookCategory} onChange={handleChangeSelectedValue}>
-              {
-                bookCategories.map((option) => <option value={option} key={option}>{option}</option>)
-              }
+            <select {...register("category")} id="category" className='w-full rounded' value={selectedBookCategory} onChange={handleChangeSelectedValue}>
+              {bookCategories.map((option) => <option value={option} key={option}>{option}</option>)}
             </select>
           </div>
         </div>
@@ -90,19 +95,19 @@ const UploadBook = () => {
           <div className="mb-2 block mx-2">
             <Label htmlFor="description" value="Book Description" />
           </div>
-          <Textarea name='description' id="description" placeholder="Description of Book..." required rows={4} />
+          <Textarea {...register("description")} id="description" placeholder="Description of Book..." required rows={4} />
         </div>
 
         <div>
           <div className="mb-2 block">
             <Label htmlFor="bookPdfURL" value="Book PDF URL" />
           </div>
-          <TextInput id="bookPdfURL" type="text" placeholder="Book PDF URL" name="bookPdfURL" required />
+          <TextInput {...register("bookPdfURL")} id="bookPdfURL" type="text" placeholder="Book PDF URL" required />
         </div>
         <Button type="submit">Upload Book</Button>
       </form>
     </div>
-  )
+  );
 }
 
-export default UploadBook
+export default UploadBook;

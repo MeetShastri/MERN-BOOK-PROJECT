@@ -5,7 +5,7 @@ import RareBooks from './RareBooks'
 import Shortlisted from './Shortlisted'
 import MoreBooks from './MoreBooks'
 import CustomersPage from './CustomersPage'
-import SignUp from '../components/SignUp'
+import SignUp from '../authentication/SignUp'
 
 const Home = () => {
   return (

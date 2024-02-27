@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 import { Sidebar } from 'flowbite-react';
 // import { BiBuoy } from 'react-icons/bi';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiOutlineCloudUpload, HiShoppingBag, HiSupport, HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
-import avatar3 from "../src/assets/cardimages/avatar3.avif";
+import avatar3 from "../assets/cardimages/avatar3.avif";
 import { FaBookOpen} from "react-icons/fa";
-import { AuthContext } from '../src/context/AuthProvider';
+import { AuthContext } from "../context/AuthProvider";
 
 
 const SideBar = () => {

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/cardimages/signup.jpeg'; // Import your background image
 import { AuthContext } from '../context/AuthProvider';
+import { toast } from 'react-toastify';
 
 const Logout = () => {
   const { logOut } = useContext(AuthContext);
@@ -10,13 +11,12 @@ const Logout = () => {
 
   const from = location.state?.from?.pathname || "/";
   const handleLogout = () => {
-    logOut().then(() => {
-      alert("Sign Out successfull");
-      navigate(from, { replace: true })
+    logOut().then(() => {   
+      toast.success("Sign Out successfull");
+      navigate(from, { replace: true })     
     }).catch((error) => {
-
     });
-
+   
   }
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>

@@ -1,46 +1,42 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/cardimages/signup.jpeg';
 import { AuthContext } from '../context/AuthProvider';
-import logo from '../assets/cardimages/logo.webp'
+import logo from '../assets/cardimages/logo.webp';
+import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 
 const SignUp = () => {
   const { createUser, loginwithGoogle } = useContext(AuthContext);
-  const [error, setError] = useState(null);
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const location = useLocation();
   const navigate = useNavigate();
 
   const from = location.state?.from?.pathname || "/";
 
-  const handleSignUp = async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
-    const form = event.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const password = form.password.value;
-
+  const onSubmit = async (data) => {
+    const { name, email, password } = data;
     try {
       // Call createUser function from AuthContext to create a new user
       await createUser(email, password, name);
-      alert("Signed Up successfully!");
+      toast.success("Signed Up successfully!");
       navigate(from, { replace: true })
     } catch (error) {
       // Handle errors
       console.error("Error signing up:", error.message);
-      setError(error.message);
+      toast.error(error.message);
     }
   };
-
 
   const handleRegister = () => {
     loginwithGoogle().then((result) => {
       const user = result.user;
-      alert("Signed Up successfully!");
+      toast.success("Signed Up successfully!");
       navigate(from, { replace: true })
     }).catch((error) => {
       // Handle errors
       console.error("Error signing up:", error.message);
-      setError(error.message);
+      toast.error(error.message);
     });
   }
 
@@ -60,20 +56,20 @@ const SignUp = () => {
               <div className="lg:text-left text-center">
                 <div className="flex items-center justify-center">
                   <div className="bg-black flex flex-col w-80 border border-gray-900 rounded-lg px-8 py-10">
-                    <form onSubmit={handleSignUp} className="flex flex-col space-y-8 mt-10">
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-8 mt-10">
                       <h1 className='text-white font font-bold text-3xl text-center'>Sign Up</h1>
                       <label className="font-bold text-lg text-white">Full Name</label>
-                      <input name='name' type="text" placeholder="Enter Your Name" className="border rounded-lg py-3 px-3 mt-4 bg-black border-indigo-600 placeholder-white-500 text-white" />
+                      <input {...register('name', { required: true })} type="text" placeholder="Enter Your Name" className="border rounded-lg py-3 px-3 mt-4 bg-black border-indigo-600 placeholder-white-500 text-white" />
+                      {errors.name && <span className="text-red-500">Name is required</span>}
                       <label className="font-bold text-lg text-white">Email</label>
-                      <input name='email' type="email" placeholder="abc@gmail.com" className="border rounded-lg py-3 px-3 bg-black border-indigo-600 placeholder-white-500 text-white" />
+                      <input {...register('email', { required: true })} type="email" placeholder="abc@gmail.com" className="border rounded-lg py-3 px-3 bg-black border-indigo-600 placeholder-white-500 text-white" />
+                      {errors.email && <span className="text-red-500">Email is required</span>}
                       <label className="font-bold text-lg text-white">Password</label>
-                      <input name='password' type="password" placeholder="***" className="border rounded-lg py-3 px-3 mt-4 bg-black border-indigo-600 placeholder-white-500 text-white" />
+                      <input {...register('password', { required: true })} type="password" placeholder="***" className="border rounded-lg py-3 px-3 mt-4 bg-black border-indigo-600 placeholder-white-500 text-white" />
+                      {errors.password && <span className="text-red-500">Password is required</span>}
                       <p className='text-white font-bold'>If you have an account. Please <Link to="/login" className='text-blue-600 underline'> Login</Link> Here</p>
                       <button type="submit" className="border border-indigo-600 bg-black text-white rounded-lg py-3 font-semibold">Sign Up</button>
-
                     </form>
-                    {error && <div className="text-red-500 text-sm">{error}</div>}
-
                     <hr className='my-4' />
                     <div className='flex w-full items-center flex-col mt-5 gap-3'>
                       <button onClick={handleRegister} className='text-white border border-white block rounded-lg px-3'><img src={logo} alt="" className='w-12 h-12 inline-block' /> Login with Google</button>

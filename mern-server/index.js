@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+    cb(null, file.originalname);
   }
 });
 
@@ -54,9 +54,11 @@ async function run() {
     // Uploading book with an image of book
     app.post('/upload-book', upload.single('image'), async (req, res) => {
       try {
+        console.log(req.body);
         const { title, authorName, category, description, bookPdfURL } = req.body;
         const imagePath = req.file.path;
         // Save book details to database including the image path
+        console.log(title, authorName, category, description, bookPdfURL, req.file );
         const result = await bookCollections.insertOne({ title, authorName, category, description, bookPdfURL, imagePath });
         res.send(result);
       } catch (error) {
@@ -65,6 +67,8 @@ async function run() {
     });
 
 
+
+   
     // Retrieving all books from database
     app.get('/all-books', async (req, res) => {
       try {
