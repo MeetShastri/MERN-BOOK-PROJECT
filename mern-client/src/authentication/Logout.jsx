@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import  { useContext } from 'react';
+import {  useLocation, useNavigate } from 'react-router-dom';
 import backgroundImage from "../assets/cardimages/signup.jpeg"// Import your background image
 import { AuthContext } from '../context/AuthProvider';
 import { toast } from 'react-toastify';
@@ -15,6 +15,7 @@ const Logout = () => {
       toast.success("Sign Out successfull");
       navigate(from, { replace: true })     
     }).catch((error) => {
+      console.log(error);
     });
   }
   return (

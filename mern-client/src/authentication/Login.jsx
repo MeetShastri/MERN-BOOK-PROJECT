@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import  { useContext, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/cardimages/login.png';
 import { AuthContext } from '../context/AuthProvider';
-import logo from '../assets/cardimages/logo.webp'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from 'react-hook-form';
@@ -88,6 +87,7 @@ const Login = () => {
 }
 
 export default Login
+
 
 
 

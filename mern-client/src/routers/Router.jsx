@@ -12,7 +12,7 @@ import Dashboard from "../dashboard/Dashboard";
 import UploadBook from "../dashboard/UploadBook";
 import ManageBooks from "../dashboard/ManageBooks";
 import UpdateBook from "../dashboard/UpdateBook";
-import SignUp from "../authentication/SignUp";
+// import SignUp from "../authentication/SignUp";
 import Login from "../authentication/Login";
 import PrivateRoute from "../privateroute/PrivateRoute";
 import Logout from "../authentication/Logout";
